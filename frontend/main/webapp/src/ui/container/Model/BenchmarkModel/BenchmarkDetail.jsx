@@ -272,22 +272,15 @@ const SearchModelDetail = (props) => {
                     backgroundColor: "#0F2749",
                     borderRadius: "8px",
                     marginTop: "1%",
-                    display:"flex",
-                    alignItems:"center"
                   }}
                 >
                   <Typography
                     variant="h5"
                     color="secondary"
-                    className={classes.mainTitleBenchmark}
+                    className={classes.mainTitle}
                   >
                     {data.modelName}
                   </Typography>
-                  <Button variant="contained" size="small"  className={classes.downloadBenchmark}
-           onClick={() => window.open(data?.refUrl, '_blank')}
-          >
-            Download
-          </Button>
                 </Card>
               </Grid>
             </Grid>

@@ -147,6 +147,8 @@ components:
           type: string
           description: specific id for the service
           example: ai4bharat/speech-to-speech-gpu--t4
+        defaultModel:
+          type: boolean  
         sourceLanguage:
           $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/SupportedLanguages
         targetLanguage:
@@ -154,7 +156,7 @@ components:
         sourceScriptCode:
           $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/SupportedScripts
         targetScriptCode:
-          $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/SupportedScripts
+          $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/SupportedScripts  
     ApiEndPoint:
       required:
         - apiKeyUrl

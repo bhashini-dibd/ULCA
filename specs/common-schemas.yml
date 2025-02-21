@@ -305,7 +305,7 @@ components:
     Speed:
       type: number
       description: optional field to specify the speed of audio
-      default: 1.0
+      default: 1
     Duration:
       type: number
       description: optional field to specify the duration of audio in milliseconds
@@ -422,11 +422,15 @@ components:
         - bih
         - anp
         - bns
+        - bra
+        - gon
+        - hoc
+        - xnr
         - mixed
         - unknown
     SupportedScripts:
       type: string
-      description: This attribute defines the  Script codes(ISO 15924) supported under ULCA, code reference available at - `https://unicode.org/iso15924/iso15924-codes.html' 
+      description: This attribute defines the  Script codes(ISO 15924) supported under ULCA, code reference available at - `https://unicode.org/iso15924/iso15924-codes.html'
       enum:
         - Beng
         - Dogr
@@ -445,6 +449,7 @@ components:
         - Mtei
         - Olck
         - Latn
+        - Wara
     SupportedTasks:
       type: string
       enum:

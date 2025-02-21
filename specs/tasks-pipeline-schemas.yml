@@ -31,7 +31,6 @@ components:
           $ref: '#/components/schemas/LanguagesList'
         pipelineResponseConfig:
           $ref: '#/components/schemas/TaskSchemaList'
-        
         feedbackUrl:
           description: URL to give feedback regarding pipeline
           type: string
@@ -40,15 +39,6 @@ components:
           $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/specs-changes/specs/model-schema.yml#/components/schemas/PipelineInferenceAPIEndPoint
         pipelineInferenceSocketEndPoint:
           $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/specs-changes/specs/model-schema.yml#/components/schemas/PipelineInferenceAPIEndPoint
-      # anyOf:  
-      #   - properties:
-      #     pipelineInferenceAPIEndPoint:
-      #       $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/model-schema.yml#/components/schemas/PipelineInferenceAPIEndPoint
-      #     required: [pipelineInferenceAPIEndPoint] 
-      #   - properties:
-      #     pipelineInferenceSocketEndPoint:
-      #       $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/model-schema.yml#/components/schemas/PipelineInferenceAPIEndPoint
-      #     required: [pipelineInferenceSocketEndPoint] 
     PipelineConfig:
       required:
         - pipelineId
@@ -64,6 +54,7 @@ components:
         - $ref: '#/components/schemas/TransliterationTask'
         - $ref: '#/components/schemas/ASRTask'
         - $ref: '#/components/schemas/TTSTask'
+        - $ref: '#/components/schemas/OCRTask'
       discriminator:
         propertyName: taskType
         mapping:
@@ -71,6 +62,7 @@ components:
           transliteration: '#/components/schemas/TransliterationTask'
           asr: '#/components/schemas/ASRTask'
           tts: '#/components/schemas/TTSTask'
+          ocr: '#/components/schemas/OCRTask'
     PipelineTasks:
       type: array
       items:
@@ -111,6 +103,15 @@ components:
           $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/SupportedTasks
         config:
           $ref: '#/components/schemas/TTSRequestConfig'
+    OCRTask:
+      required:
+        - taskType
+      type: object
+      properties:
+        taskType:
+          $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/SupportedTasks
+        config:
+          $ref: '#/components/schemas/OCRRequestConfig'      
     TranslationRequestConfig:
       required:
         - language
@@ -141,6 +142,13 @@ components:
       properties:
         language:
           $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/LanguagePair
+    OCRRequestConfig:
+      required:
+        - language
+      type: object
+      properties:
+        language:
+          $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/LanguagePair 
     LanguageSchema:
       type: object
       properties:
@@ -159,13 +167,15 @@ components:
         - $ref: '#/components/schemas/TransliterationTaskInference'
         - $ref: '#/components/schemas/ASRTaskInference'
         - $ref: '#/components/schemas/TTSTaskInference'
+        - $ref: '#/components/schemas/OCRTaskInference'
       discriminator:
         propertyName: taskType
         mapping:
           translation: '#/components/schemas/TranslationTaskInference'
-          transliteration : '#/components/schemas/TransliterationTaskInference'
+          transliteration: '#/components/schemas/TransliterationTaskInference'
           asr: '#/components/schemas/ASRTaskInference'
           tts: '#/components/schemas/TTSTaskInference'
+          ocr: '#/components/schemas/OCRTaskInference'
     TaskSchemaList:
       type: array
       items:
@@ -205,7 +215,6 @@ components:
           description: list of
           items:
             $ref: '#/components/schemas/TranslationResponseConfig'
-            
     TransliterationTaskInference:
       required:
         - taskType
@@ -237,7 +246,6 @@ components:
           description: list of
           items:
             $ref: '#/components/schemas/TransliterationResponseConfig'
-            
     ASRTaskInference:
       required:
         - taskType
@@ -300,6 +308,37 @@ components:
           description: list of
           items:
             $ref: '#/components/schemas/TTSResponseConfig'
+    OCRTaskInference:
+      required:
+        - taskType
+        - config
+      type: object
+      properties:
+        callbackUrl:
+          type: string
+          format: url
+        inferenceApiKey:
+          required:
+            - value
+          type: object
+          description: if endpoint needs authorization in headers to fetch output
+          properties:
+            name:
+              type: string
+              description: expected if the callbackurl requires an API key with a particular name. `Authorization` will be considered as default name if value is provided without a name
+              default: Authorization
+              example: apiKey
+            value:
+              type: string
+              description: expected if the callbackurl requires an API key so as to fetch output
+              example: dde19858-b354-4e24-8e92-a7a4b320c066
+        taskType:
+          $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/SupportedTasks
+        config:
+          type: array
+          description: list of
+          items:
+            $ref: '#/components/schemas/OCRResponseConfig'        
     TranslationResponseConfig:
       required:
         - language
@@ -423,6 +462,44 @@ components:
             - default
         encoding:
           $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/Encoding
+    OCRResponseConfig:
+      required:
+        - language
+        - serviceId
+        - modelId
+      type: object
+      properties:
+        serviceId:
+          type: string
+          description: Unique identifier of model
+          example: 103
+        modelId:
+          type: string
+          description: Unique identifier of model
+          example: 63c9586ea0e5e81614ff96a8
+        language:
+          $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/LanguagePair 
+        detectionLevel:
+          type: string
+          description: on what level of text does the model works best
+          default: word
+          enum:
+            - word
+            - line
+            - paragraph
+            - page
+        modality:
+          type: string
+          description: on what type of image does the model works best
+          default: print
+          enum:
+            - print
+            - handwritten
+            - scenetext 
+        inputFormat:
+          $ref: '#/components/schemas/SupportedFormats'
+        outputFormat:
+          $ref: '#/components/schemas/SupportedFormats'    
     TranscriptionFormat:
       type: object
       properties:

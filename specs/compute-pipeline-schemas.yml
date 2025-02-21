@@ -11,7 +11,6 @@ servers:
 paths: {}
 components:
   schemas:
-  
     PipelineComputeRequest:
       required:
         - pipelineTasks
@@ -19,12 +18,11 @@ components:
       type: object
       properties:
         pipelineTasks:
-          $ref: "#/components/schemas/PipelineRequestList"
+          $ref: '#/components/schemas/PipelineRequestList'
         inputData:
-          $ref: "#/components/schemas/PipelineInput"
+          $ref: '#/components/schemas/PipelineInput'
         controlConfig:
-          $ref: "#/components/schemas/ControlConfig"
-
+          $ref: '#/components/schemas/ControlConfig'
     PipelineComputeResponse:
       required:
         - pipelineResponse
@@ -32,57 +30,49 @@ components:
       type: object
       properties:
         pipelineResponse:
-          $ref: "#/components/schemas/ResponseList"
+          $ref: '#/components/schemas/ResponseList'
         controlConfig:
-          $ref: "#/components/schemas/ControlConfig"
-
+          $ref: '#/components/schemas/ControlConfig'
     TaskRequestConfig:
       anyOf:
-        - $ref: "#/components/schemas/TranslationRequestConfig"
-        - $ref: "#/components/schemas/TransliterationRequestConfig"
-        - $ref: "#/components/schemas/ASRRequestConfig"
-        - $ref: "#/components/schemas/TTSRequestConfig"
-
+        - $ref: '#/components/schemas/TranslationRequestConfig'
+        - $ref: '#/components/schemas/TransliterationRequestConfig'
+        - $ref: '#/components/schemas/ASRRequestConfig'
+        - $ref: '#/components/schemas/TTSRequestConfig'
+        - $ref: '#/components/schemas/OCRRequestConfig'
     PipelineInput:
       oneOf:
-        - $ref: "#/components/schemas/TranslationRequestInput"
-        - $ref: "#/components/schemas/TransliterationRequestInput"
-        - $ref: "#/components/schemas/ASRRequestInput"
-        - $ref: "#/components/schemas/TTSRequestInput"
+        - $ref: '#/components/schemas/TranslationRequestInput'
+        - $ref: '#/components/schemas/TransliterationRequestInput'
+        - $ref: '#/components/schemas/ASRRequestInput'
+        - $ref: '#/components/schemas/TTSRequestInput'
+        - $ref: '#/components/schemas/OCRRequestInput'
 
     PipelineRequestList:
       type: array
       items:
-        $ref: "#/components/schemas/TaskRequestConfig"
-
-    # PipelineInputList:
-    #   type: array
-    #   items:
-    #     $ref: "#/components/schemas/PipelineInput"
-
-
+        $ref: '#/components/schemas/TaskRequestConfig'
     TranslationRequestInput:
       required:
         - input
       type: object
       properties:
         input:
-          $ref: "#/components/schemas/Sentences"
-    
+          $ref: '#/components/schemas/Sentences'
     NerRequestInput:
       required:
         - input
       type: object
       properties:
         input:
-          $ref: "#/components/schemas/Sentences"
+          $ref: '#/components/schemas/Sentences'
     TxtLangDetectionRequestInput:
       required:
         - input
       type: object
       properties:
         input:
-          $ref: "#/components/schemas/Sentences"
+          $ref: '#/components/schemas/Sentences'
     OCRRequestInput:
       required:
         - image
@@ -90,15 +80,13 @@ components:
       properties:
         image:
           $ref: '#/components/schemas/ImageFiles'
-          
     TransliterationRequestInput:
       required:
         - input
       type: object
       properties:
         input:
-          $ref: "#/components/schemas/Sentences"
-          
+          $ref: '#/components/schemas/Sentences'
     TranslationRequestConfig:
       required:
         - config
@@ -108,8 +96,7 @@ components:
         taskType:
           $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/SupportedTasks
         config:
-          $ref: "#/components/schemas/TranslationConfig"
-          
+          $ref: '#/components/schemas/TranslationConfig'
     TransliterationRequestConfig:
       required:
         - config
@@ -119,8 +106,7 @@ components:
         taskType:
           $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/SupportedTasks
         config:
-          $ref: "#/components/schemas/TransliterationConfig"
-
+          $ref: '#/components/schemas/TransliterationConfig'
     ASRRequestConfig:
       required:
         - config
@@ -130,24 +116,21 @@ components:
         taskType:
           $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/SupportedTasks
         config:
-          $ref: "#/components/schemas/AudioConfig"
-
+          $ref: '#/components/schemas/AudioConfig'
     ASRRequestInput:
       required:
         - audio
       type: object
       properties:
         audio:
-          $ref: "#/components/schemas/AudioFiles"
-
+          $ref: '#/components/schemas/AudioFiles'
     TTSRequestInput:
       required:
         - input
       type: object
       properties:
         input:
-          $ref: "#/components/schemas/Sentences"
-
+          $ref: '#/components/schemas/Sentences'
     TTSRequestConfig:
       required:
         - config
@@ -157,13 +140,21 @@ components:
         taskType:
           $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/SupportedTasks
         config:
-          $ref: "#/components/schemas/TTSConfig"
-
-    
+          $ref: '#/components/schemas/TTSConfig'
+    OCRRequestConfig:
+      required:
+        - config
+        - taskType
+      type: object
+      properties:
+        taskType:
+          $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/SupportedTasks
+        config:
+          $ref: '#/components/schemas/OCRConfig'      
     AudioOutput:
       type: array
       description: list of
-      items: 
+      items:
         $ref: '#/components/schemas/AudioTranscription'
     AudioTranscription:
       required:
@@ -179,13 +170,11 @@ components:
           description: list of
           items:
             $ref: '#/components/schemas/TokenProbability'
-    
     TokenProbability:
       type: array
       description: list of
       items:
-            $ref: '#/components/schemas/SubtokenProbability'
-    
+        $ref: '#/components/schemas/SubtokenProbability'
     SubtokenProbability:
       required:
         - token
@@ -194,19 +183,17 @@ components:
       properties:
         token:
           type: string
-          description : specific character
+          description: specific character
         score:
           type: number
           minimum: 0
           maximum: 1
           description: probability score for the specific character
-    
     Sentences:
       type: array
       description: list of
       items:
-        $ref: "#/components/schemas/Sentence"
-
+        $ref: '#/components/schemas/Sentence'
     Sentence:
       required:
         - source
@@ -220,7 +207,6 @@ components:
           minLength: 1
           type: string
           description: to be used along with translation model. expected translated sentence, for reference
-
     TranslationConfig:
       required:
         - language
@@ -234,10 +220,9 @@ components:
         language:
           $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/LanguagePair
         inputFormat:
-          $ref: "#/components/schemas/SupportedFormats"
+          $ref: '#/components/schemas/SupportedFormats'
         outputFormat:
-          $ref: "#/components/schemas/SupportedFormats"
-          
+          $ref: '#/components/schemas/SupportedFormats'
     TransliterationConfig:
       required:
         - language
@@ -251,10 +236,9 @@ components:
         language:
           $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/LanguagePair
         inputFormat:
-          $ref: "#/components/schemas/SupportedFormats"
+          $ref: '#/components/schemas/SupportedFormats'
         outputFormat:
-          $ref: "#/components/schemas/SupportedFormats"
-    
+          $ref: '#/components/schemas/SupportedFormats'
     TTSConfig:
       required:
         - language
@@ -272,10 +256,9 @@ components:
         samplingRate:
           $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/AudioSampleRate
         inputFormat:
-          $ref: "#/components/schemas/SupportedFormats"
+          $ref: '#/components/schemas/SupportedFormats'
         outputFormat:
-          $ref: "#/components/schemas/SupportedFormats"
-
+          $ref: '#/components/schemas/SupportedFormats'
     AudioConfig:
       required:
         - language
@@ -313,7 +296,7 @@ components:
         detailed:
           type: boolean
           description: to specify whether details are required in output like SNR, sampling rate
-        bestTokenCount : 
+        bestTokenCount:
           type: integer
           description: Displays the token level probabilities of the final prediction. 5 would be the suggested optimal value. Each successive token will have exponentially lower probability
         punctuation:
@@ -328,8 +311,39 @@ components:
             - default
         encoding:
           $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/Encoding
-
-    
+    OCRConfig:
+      required:
+        - language
+        - serviceId
+      type: object
+      properties:
+        serviceId:
+          type: integer
+          description: Unique identifier of service
+          example: 103
+        language:
+          $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/LanguagePair
+        inputFormat:
+          $ref: '#/components/schemas/SupportedFormats'
+        outputFormat:
+          $ref: '#/components/schemas/SupportedFormats'
+        detectionLevel:
+          type: string
+          description: on what level of text does the model works best
+          default: word
+          enum:
+            - word
+            - line
+            - paragraph
+            - page
+        modality:
+          type: string
+          description: on what type of image does the model works best
+          default: print
+          enum:
+            - print
+            - handwritten
+            - scenetext        
     SpeechContext:
       type: object
       properties:
@@ -345,7 +359,6 @@ components:
         boost:
           type: number
           description: numeric to specify phrase boosting threshold
-    
     TextFormat:
       type: string
       description: supported textual formats
@@ -354,7 +367,6 @@ components:
         - transcript
         - webvtt
         - alternatives
-
     AudioFormat:
       type: string
       description: audio format of the audio file
@@ -370,15 +382,14 @@ components:
         - webm
     SupportedFormats:
       anyOf:
-        - $ref: "#/components/schemas/AudioFormat"
-        - $ref: "#/components/schemas/TextFormat"
-        - $ref: "#/components/schemas/TextFormat"    
-
+        - $ref: '#/components/schemas/AudioFormat'
+        - $ref: '#/components/schemas/TextFormat'
+        - $ref: '#/components/schemas/TextFormat'
     AudioFiles:
       type: array
       description: list of
       items:
-        $ref: "#/components/schemas/AudioFile"
+        $ref: '#/components/schemas/AudioFile'
     AudioFile:
       required:
         - audioContent | audioUri
@@ -392,7 +403,6 @@ components:
           type: string
           description: path on gcp/s3 bucket or https url
           example: gs://bucket/audio.wav
-
     TranscriptionFormat:
       type: object
       properties:
@@ -403,7 +413,6 @@ components:
             - srt
             - transcript
             - alternatives
-            
     ImageFiles:
       type: array
       description: list of
@@ -422,18 +431,17 @@ components:
           type: string
           description: path on gcp/s3 bucket or https url
           example: gs://bucket/testimg.jpeg
-
     Responses:
       anyOf:
-        - $ref: "#/components/schemas/TranslationResponse"
-        - $ref: "#/components/schemas/TransliterationResponse"
-        - $ref: "#/components/schemas/ASRResponse"
-        - $ref: "#/components/schemas/TTSResponse"
+        - $ref: '#/components/schemas/TranslationResponse'
+        - $ref: '#/components/schemas/TransliterationResponse'
+        - $ref: '#/components/schemas/ASRResponse'
+        - $ref: '#/components/schemas/TTSResponse'
+        - $ref: '#/components/schemas/OCRResponse'
     ResponseList:
       type: array
       items:
-        $ref: "#/components/schemas/Responses"
-
+        $ref: '#/components/schemas/Responses'
     TranslationResponse:
       description: the response for translation.  Standard http status codes to be used.
       required:
@@ -444,10 +452,9 @@ components:
         taskType:
           $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/SupportedTasks
         output:
-          $ref: "#/components/schemas/Sentences"
+          $ref: '#/components/schemas/Sentences'
         config:
-          $ref: "#/components/schemas/TranslationConfig"
-    
+          $ref: '#/components/schemas/TranslationConfig'
     TransliterationResponse:
       description: the response for transliteration.  Standard http status codes to be used.
       required:
@@ -458,10 +465,9 @@ components:
         taskType:
           $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/SupportedTasks
         output:
-          $ref: "#/components/schemas/Sentences"
+          $ref: '#/components/schemas/Sentences'
         config:
-          $ref: "#/components/schemas/TransliterationConfig"
-
+          $ref: '#/components/schemas/TransliterationConfig'
     ASRResponse:
       description: the response for translation.  Standard http status codes to be used.
       required:
@@ -475,7 +481,6 @@ components:
           $ref: '#/components/schemas/AudioOutput'
         config:
           $ref: '#/components/schemas/TranslationConfig'
-
     TTSResponse:
       description: the response for translation.  Standard http status codes to be used.
       required:
@@ -486,14 +491,24 @@ components:
         taskType:
           $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/SupportedTasks
         audio:
-          $ref: "#/components/schemas/AudioFiles"
+          $ref: '#/components/schemas/AudioFiles'
         config:
-          $ref: "#/components/schemas/AudioConfig"
-          
+          $ref: '#/components/schemas/AudioConfig'
+    OCRResponse:
+      description: the response for translation.  Standard http status codes to be used.
+      required:
+        - audio
+        - taskType
+      type: object
+      properties:
+        taskType:
+          $ref: https://raw.githubusercontent.com/bhashini-dibd/ulca/master/specs/common-schemas.yml#/components/schemas/SupportedTasks
+        image:
+          $ref: '#/components/schemas/ImageFiles'
+        config:
+          $ref: '#/components/schemas/TranslationConfig'
     ControlConfig:
       description: generic settings related to pipeline
-      # required:
-      #   - dataTracking
       type: object
       properties:
         dataTracking:
